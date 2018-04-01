@@ -37,7 +37,8 @@ class App extends Component {
             returnKeyType={"done"}
             autoCorrect={false}
           />
-          <ScrollView>
+          //ScrollView안쪽으로 styles.todos 전달함
+          <ScrollView contentContainerStyle={styles.todos}>
             <ToDo />
           </ScrollView>
         </View>
@@ -93,6 +94,9 @@ const styles = StyleSheet.create({
     borderBottomColor: "#bbb",
     borderBottomWidth: 1,
     fontSize: 25
+  },
+  todos: {
+    alignItems: "center"
   }
 });
 
