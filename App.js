@@ -39,7 +39,7 @@ class App extends Component {
           />
           //ScrollView안쪽으로 styles.todos 전달함
           <ScrollView contentContainerStyle={styles.todos}>
-            <ToDo />
+            <ToDo text="Todo" />
           </ScrollView>
         </View>
       </View>

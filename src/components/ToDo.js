@@ -4,7 +4,8 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  TextInput
 } from "react-native";
 
 const { width, height } = Dimensions.get("window");
@@ -12,9 +13,11 @@ const { width, height } = Dimensions.get("window");
 class ToDo extends Component {
   state = {
     isEditing: false,
-    isCompleted: false
+    isCompleted: false,
+    todoValue: ""
   };
   render() {
+    const { text } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
@@ -26,14 +29,29 @@ class ToDo extends Component {
               ]}
             />
           </TouchableOpacity>
-          <Text
-            style={[
-              styles.text,
-              this.state.isCompleted ? styles.completedText : ""
-            ]}
-          >
-            I am todo
-          </Text>
+          {this.state.isEditing ? (
+            <TextInput
+              style={[
+                styles.input,
+                styles.text,
+                this.state.isCompleted ? styles.completedText : ""
+              ]}
+              value={this.state.todoValue}
+              multiline={true}
+              onChangeText={this._constrolInput.bind(this)}
+              returnKeyType={"done"}
+              onBlur={this._finishEditing.bind(this)}
+            />
+          ) : (
+            <Text
+              style={[
+                styles.text,
+                this.state.isCompleted ? styles.completedText : ""
+              ]}
+            >
+              {text}
+            </Text>
+          )}
         </View>
 
         {this.state.isEditing ? (
@@ -71,14 +89,23 @@ class ToDo extends Component {
   };
 
   _startEditing = () => {
+    const { text } = this.props;
+
     this.setState({
-      isEditing: true
+      isEditing: true,
+      todoValue: text
     });
   };
 
   _finishEditing = () => {
     this.setState({
       isEditing: false
+    });
+  };
+
+  _constrolInput = text => {
+    this.setState({
+      todoValue: text
     });
   };
 }
@@ -95,7 +122,8 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "600",
     fontSize: 20,
-    marginVertical: 20
+    marginVertical: 20,
+    width: width / 2
   },
   circle: {
     width: 30,
@@ -126,6 +154,10 @@ const styles = StyleSheet.create({
   actionContainer: {
     marginVertical: 10,
     marginHorizontal: 10
+  },
+  input: {
+    marginVertical: 10,
+    width: width / 2
   }
 });
 
