@@ -17,15 +17,47 @@ class ToDo extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._toggleComplete.bind(this)}>
-          <View
+        <View style={styles.column}>
+          <TouchableOpacity onPress={this._toggleComplete.bind(this)}>
+            <View
+              style={[
+                styles.circle,
+                this.state.isCompleted ? styles.completed : styles.uncompleted
+              ]}
+            />
+          </TouchableOpacity>
+          <Text
             style={[
-              styles.circle,
-              this.state.isCompleted ? styles.completed : styles.uncompleted
+              styles.text,
+              this.state.isCompleted ? styles.completedText : ""
             ]}
-          />
-        </TouchableOpacity>
-        <Text style={styles.text}>I am todo</Text>
+          >
+            I am todo
+          </Text>
+        </View>
+
+        {this.state.isEditing ? (
+          <View style={styles.actions}>
+            <TouchableOpacity onPress={this._finishEditing.bind(this)}>
+              <View style={styles.actionContainer}>
+                <Text style={styles.actionsText}>✅</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.actions}>
+            <TouchableOpacity onPress={this._startEditing.bind(this)}>
+              <View style={styles.actionContainer}>
+                <Text style={styles.actionsText}>✏️</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.actionContainer}>
+                <Text style={styles.actionsText}>❌</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   }
@@ -37,6 +69,18 @@ class ToDo extends Component {
       };
     });
   };
+
+  _startEditing = () => {
+    this.setState({
+      isEditing: true
+    });
+  };
+
+  _finishEditing = () => {
+    this.setState({
+      isEditing: false
+    });
+  };
 }
 
 const styles = StyleSheet.create({
@@ -45,7 +89,8 @@ const styles = StyleSheet.create({
     borderBottomColor: "#bbb",
     borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   text: {
     fontWeight: "600",
@@ -62,8 +107,25 @@ const styles = StyleSheet.create({
   completed: {
     borderColor: "#bbb"
   },
+  completedText: {
+    color: "#bbb",
+    textDecorationLine: "line-through"
+  },
   uncompleted: {
     borderColor: "#F23657"
+  },
+  column: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: width / 2
+  },
+  actions: {
+    flexDirection: "row"
+  },
+  actionContainer: {
+    marginVertical: 10,
+    marginHorizontal: 10
   }
 });
 
